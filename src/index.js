@@ -125,7 +125,7 @@ function showSplash(server) {
     });
 // and load the index.html of the app.
     intro.loadURL(url.format({
-        pathname: path.join(__dirname, 'splash.html'),
+        pathname: path.join(__dirname, 'fibers/splash.html'),
         protocol: 'file:',
         slashes: true
     }));
