@@ -60,7 +60,7 @@ router2.use('/', serveFiles('/Projects/Node/Fibers/src/components'));
 router2.use('/', serveFiles('/Projects/Node/Fibers/bower_components'));
 
 let router3 = __CONNECT__();
-router3.use('/', serveFiles('/Projects/Node/Fibers/src/web/admin'));
+router3.use('/', serveFiles('/Projects/Node/Fibers/src/fibers.dev/admin'));
 
 let hosts = new HostRouter();
 hosts.use('components.fiber.dev', router2);
