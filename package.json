@@ -1,6 +1,7 @@
 {
     "name": "fiber",
     "version": "0.0.2",
+    "debug": true,
     "description": "a",
     "main": "src/fibers/index.js",
     "scripts": {
