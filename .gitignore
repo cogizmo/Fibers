@@ -65,6 +65,7 @@ node_modules/
 #  WebComponents (Polymer)
 # ---------------------------------------
 components/
+bower_components/
 
 # ==============================================================================
 #  DEBUGGING AND LOGGING
