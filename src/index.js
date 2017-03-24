@@ -1,12 +1,12 @@
 "use strict";
 
-const __APP__ = require('./Application.js');
+const __APP__ = require('./fibers/Application.js');
 
 const path = require('path');
 const url = require('url');
 
-const Splash = require('./SplashWindow.js');
-const Main = require('./AsyncWindow.js');
+const Splash = require('./fibers/SplashWindow.js');
+const Main = require('./fibers/AsyncWindow.js');
 
 const LOG = console.log.bind(console);
 
@@ -17,7 +17,7 @@ let intro, win;
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-const HostRouter = require('./HostRouter.js');
+const HostRouter = require('./fibers/HostRouter.js');
 const __CONNECT__ = require('connect');
 let serveFiles = require('serve-static');
 
@@ -219,7 +219,7 @@ __APP__.on('activate', () => {
 });
 
 async function startRemoteServer(router) {
-    const Server = require('./ApplicationServer.js');
+    const Server = require('./fibers/ApplicationServer.js');
 
     let httpServer;
     let port = await Server.findPort();
