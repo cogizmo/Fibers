@@ -56,20 +56,21 @@ router2.use('/', (request, response, next) => {
         break;
     }
 });
-router2.use('/', serveFiles('/projects/node/fiber/src/components'));
-router2.use('/', serveFiles('/projects/node/fiber/bower_components'));
+router2.use('/', serveFiles('/Projects/Node/Fibers/src/components'));
+router2.use('/', serveFiles('/Projects/Node/Fibers/bower_components'));
 
 let router3 = __CONNECT__();
+router3.use('/', serveFiles('/Projects/Node/Fibers/src/web/admin'));
 
 let hosts = new HostRouter();
 hosts.use('components.fiber.dev', router2);
 hosts.use('fiber.dev', router);
-hosts.use('admin.fiber.dev', router);
+hosts.use('admin.fiber.dev', router3);
 
-router.use('/', serveFiles('/projects/node/fiber/src/fiber'));
-router.use('/components', serveFiles('/projects/node/fiber/src/components'));
-router.use('/bower_components', serveFiles('/projects/node/fiber/bower_components'));
-router.use('/class', serveFiles('/projects/node/fiber/src/class'));
+router.use('/', serveFiles('/Projects/Node/Fibers/src/fiber'));
+router.use('/components', serveFiles('/Projects/Node/Fibers/src/components'));
+router.use('/bower_components', serveFiles('/Projects/Node/Fibers/bower_components'));
+router.use('/class', serveFiles('/Projects/Node/Fibers/src/class'));
 
 
 process.on('error', (err) => {
