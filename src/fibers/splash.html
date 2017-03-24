@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <title>Starting Fiber...</title>
+
+    <link rel="stylesheet" href="./splash.css">
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../class/EventList.js"></script>
+
+    <link rel="import" href="../components/native-detector/template.html">
+    <link rel="import" href="../components/native-window/template.html">
+    <link rel="import" href="../components/native-ipchannel/template.html">
+    <link rel="import" href="../components/soft-progress/template.html">
+    <link rel="import" href="../components/shiny-presentation/template.html">
+    <link rel="import" href="../components/shiny-slide/template.html">
+    <link rel="import" href="../components/shiny-group/template.html">
+    <link rel="import" href="../components/shiny-animation/template.html">
+    <link rel="import" href="../components/liquid-trigger/template.html">
+</head>
+<body>
+    <native-ipchannel channel="components"></native-ipchannel>
+    <native-detector></native-detector>
+    <native-window id="WINDOW">
+        <header>
+            <soft-progress></soft-progress>
+            <soft-progress id="COMPONENTS"></soft-progress>
+            <soft-progress></soft-progress>
+        </header>
+        <main>
+            <shiny-presentation>
+                <shiny-slide slot="slide" selected>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                </shiny-slide>
+                <shiny-slide slot="slide">
+                    <shiny-group>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    </shiny-group>
+                </shiny-slide>
+                <shiny-slide slot="slide">
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                </shiny-slide>
+                <shiny-slide slot="slide">
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                    <shiny-animation><p>Hello</p></shiny-animation>
+                </shiny-slide>
+            </shiny-presentation>
+<!--            <my-carousel>
+                <img data-src="https://app-layout-assets.appspot.com/assets/bg1.jpg">
+                <img data-src="https://app-layout-assets.appspot.com/assets/bg2.jpg">
+                <img data-src="https://app-layout-assets.appspot.com/assets/bg3.jpg">
+                <img data-src="https://app-layout-assets.appspot.com/assets/bg4.jpg">
+            </my-carousel>
+-->
+        </main>
+        <footer>
+            <span><b>Fiber:</b><script>document.write(require('electron').remote.app.getVersion())</script></span>
+            <span><b>Electron:</b><script>document.write(process.versions.electron)</script></span>
+            <span><b>Chromium:</b><script>document.write(process.versions.chrome)</script></span>
+            <span><b>Node:</b><script>document.write(process.versions.node)</script></span>
+        </footer>
+    </native-window>
+    <script>
+    document.body.addEventListener('components', function(e) {
+        console.log(e);
+        e.stopPropagation();
+        e.preventDefault();
+    })
+    </script>
+    <script>
+    window.addEventListener(Presentation.Events.EndedEvent.type, (event) => {
+        const {ipcRenderer} = require('electron');
+        setTimeout(() => {
+            ipcRenderer.send('application-ready', '');
+        }, 1000);
+    });
+    </script>
+    <script>
+    class jackhole extends Object {
+        constructor() {
+        super();
+        }
+
+        async make() {
+        return new Promise((y, n) => {
+            setTimeout(() => {
+            y(1)
+            }, Math.random() * 5000 + 5000)
+        });
+        }
+    }
+    let a = new jackhole()
+    a.make().then((v) => {
+        console.log('Returned: ' + v);
+    })
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+* {
+    position: relative; margin: 0; padding: 0;
+}
+
+html {
+    height: 100%;
+    display: flex; flex-flow: row nowrap; align-items: stretch; justify-content: flex-start;
+}
+
+    html > body {
+        flex: 1;
+        display: flex; flex-flow: column nowrap;
+    }
+
+        #WINDOW {
+            flex: 1;
+        }
+
+        #WINDOW > header {
+        /*    position: absolute; top: 0; right: 0; left: 0;*/
+            display: flex; justify-content: space-around;
+        }
+
+        #WINDOW > main {
+            flex: 1;
+            display: flex; flex-flow: row nowrap; align-items: stretch;
+        }
+
+            main > shiny-presentation {
+                flex: 1;
+            }
+
+        #WINDOW > footer {
+        /*    position: absolute; right: 0; bottom: 0; left: 0; margin-top: 1rem;
+            padding: 0.25rem 1rem; */
+            display: flex; flex-flow: row nowrap; align-items: stretch; justify-content: space-between;
+        }
+
+            #WINDOW > footer > * {
+                flex: 1;
+            }
+            #WINDOW > footer > :not(:first-child) {
+                margin-left: 1rem;
+            }
+            #WINDOW > footer > :not(:last-child) {
+                margin-right: 1rem;
+            }
