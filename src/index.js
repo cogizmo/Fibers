@@ -1,12 +1,12 @@
 "use strict";
 
-const __APP__ = require('./fibers/Application.js');
+const __APP__ = require('./class/electron/Application.js');
 
 const path = require('path');
 const url = require('url');
 
-const Splash = require('./fibers/SplashWindow.js');
-const Main = require('./fibers/AsyncWindow.js');
+const Splash = require('./class/electron/SplashWindow.js');
+const Main = require('./class/electron/AsyncWindow.js');
 
 const LOG = console.log.bind(console);
 
