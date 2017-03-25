@@ -1,8 +1,9 @@
 {
     "name": "fiber",
     "version": "0.0.2",
+    "debug": true,
     "description": "a",
-    "main": "src/fibers/index.js",
+    "main": "src/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron --js-flags=\"-harmony-async-await\" ."

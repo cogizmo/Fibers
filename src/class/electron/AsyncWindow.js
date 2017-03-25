@@ -1,7 +1,7 @@
 "use strict";
 
 const {BrowserWindow} = require('electron');
-const DefaultConfig = require('../class/DefaultConfig.js');
+const DefaultConfig = require('../DefaultConfig.js');
 
 const __PROPS__ = new WeakMap();
 class AsyncWindow extends BrowserWindow {

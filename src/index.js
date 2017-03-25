@@ -1,12 +1,12 @@
 "use strict";
 
-const __APP__ = require('./Application.js');
+const __APP__ = require('./class/electron/Application.js');
 
 const path = require('path');
 const url = require('url');
 
-const Splash = require('./SplashWindow.js');
-const Main = require('./AsyncWindow.js');
+const Splash = require('./class/electron/SplashWindow.js');
+const Main = require('./class/electron/AsyncWindow.js');
 
 const LOG = console.log.bind(console);
 
@@ -17,7 +17,7 @@ let intro, win;
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-const HostRouter = require('./HostRouter.js');
+const HostRouter = require('./class/node/HostRouter.js');
 const __CONNECT__ = require('connect');
 let serveFiles = require('serve-static');
 
@@ -56,20 +56,21 @@ router2.use('/', (request, response, next) => {
         break;
     }
 });
-router2.use('/', serveFiles('/projects/node/fiber/src/components'));
-router2.use('/', serveFiles('/projects/node/fiber/bower_components'));
+router2.use('/', serveFiles('/Projects/Node/Fibers/src/components'));
+router2.use('/', serveFiles('/Projects/Node/Fibers/bower_components'));
 
 let router3 = __CONNECT__();
+router3.use('/', serveFiles('/Projects/Node/Fibers/src/fibers.dev/admin'));
 
 let hosts = new HostRouter();
 hosts.use('components.fiber.dev', router2);
 hosts.use('fiber.dev', router);
-hosts.use('admin.fiber.dev', router);
+hosts.use('admin.fiber.dev', router3);
 
-router.use('/', serveFiles('/projects/node/fiber/src/fiber'));
-router.use('/components', serveFiles('/projects/node/fiber/src/components'));
-router.use('/bower_components', serveFiles('/projects/node/fiber/bower_components'));
-router.use('/class', serveFiles('/projects/node/fiber/src/class'));
+router.use('/', serveFiles('/Projects/Node/Fibers/src/fiber'));
+router.use('/components', serveFiles('/Projects/Node/Fibers/src/components'));
+router.use('/bower_components', serveFiles('/Projects/Node/Fibers/bower_components'));
+router.use('/class', serveFiles('/Projects/Node/Fibers/src/class'));
 
 
 process.on('error', (err) => {
@@ -124,7 +125,7 @@ function showSplash(server) {
     });
 // and load the index.html of the app.
     intro.loadURL(url.format({
-        pathname: path.join(__dirname, 'splash.html'),
+        pathname: path.join(__dirname, 'fibers/splash.html'),
         protocol: 'file:',
         slashes: true
     }));
@@ -219,7 +220,7 @@ __APP__.on('activate', () => {
 });
 
 async function startRemoteServer(router) {
-    const Server = require('./ApplicationServer.js');
+    const Server = require('./fibers/ApplicationServer.js');
 
     let httpServer;
     let port = await Server.findPort();
