@@ -1,7 +1,7 @@
 "use strict";
 
 (function () {
-    const Base = require('../class/Base.js');
+    const Base = require('../Base.js');
 
     const PROPS = new WeakMap();
     class Application extends Base {
