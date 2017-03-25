@@ -17,7 +17,7 @@ let intro, win;
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-const HostRouter = require('./fibers/HostRouter.js');
+const HostRouter = require('./class/node/HostRouter.js');
 const __CONNECT__ = require('connect');
 let serveFiles = require('serve-static');
 
