@@ -1,12 +1,12 @@
 module.exports = (function defineClass() {
 
-    const FObject = require('./Object.js');
-    class Context extends FObject {
+    const ModelObject = require('./ModelObject.js');
+    class Handler extends ModelObject {
         constructor() {
             super();
         }
 
     }
 
-    return Context;
+    return Handler;
 }) ();

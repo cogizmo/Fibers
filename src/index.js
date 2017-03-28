@@ -17,7 +17,7 @@ let intro, win;
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-const HostRouter = require('./class/node/HostRouter.js');
+const HostRouter = require('./class/server/HostRouter.js');
 const __CONNECT__ = require('connect');
 let serveFiles = require('serve-static');
 
@@ -26,13 +26,12 @@ let router2 = __CONNECT__();
 router2.use('/', (request, response, next) => {
     let {headers, method} = request;
     let {origin, host, referrer} = headers;
-
-    console.log('Host: '+host);
-    console.log('Origin: '+origin);
-    console.log('Referrer: '+referrer);
-
     let [hostname] = host.split(':');
-    console.log(hostname);
+
+    !!host && console.log('Host: '+hostname);
+    !!origin && console.log('Origin: '+origin);
+    !!referrer && console.log('Referrer: '+referrer);
+
     switch (method) {
     case 'HEAD':
     case 'GET':
@@ -63,8 +62,8 @@ let router3 = __CONNECT__();
 router3.use('/', serveFiles('/Projects/Node/Fibers/src/fibers.dev/admin'));
 
 let hosts = new HostRouter();
-hosts.use('components.fiber.dev', router2);
 hosts.use('fiber.dev', router);
+hosts.use('components.fiber.dev', router2);
 hosts.use('admin.fiber.dev', router3);
 
 router.use('/', serveFiles('/Projects/Node/Fibers/src/fiber'));
@@ -114,7 +113,7 @@ catch (ex) {
 function showSplash(server) {
 // Create the browser window.
     intro = new Splash({
-        width: 800, 
+        width: 800,
         height: 600,
         closable: true,
         minimizable: false,
@@ -138,7 +137,7 @@ function showMain(server) {
 // Create the browser window.
     win = new Main({
         show: false,
-        width: 800, 
+        width: 800,
         height: 600,
         frame: false
     });
@@ -204,7 +203,7 @@ function onWindowsClosed() {
             console.log(ex);
             throw ex;
         }
-    
+
         if (process.platform !== 'darwin') {
             __APP__.quit();
         }
@@ -245,3 +244,23 @@ __APP__.on('before-quit', () => {
     }).catch(LOG);
 });
 
+const ArangoDB = require('arangojs');
+async function logInToDatabase(username, password) {
+    const database = 'fibers-development';
+    let port = 8529,
+        host = 'localhost';
+    let db = ArangoDB(`http://${host}:${port}`);
+    db.useDatabase(database);
+    db.useBasicAuth(username, password);
+
+    return db;
+}
+
+(async function() {
+    let fibers = await logInToDatabase('overseer', '#nf0rm@$!0n#$?0wr');
+
+    const Context = require('./class/server/model/Context.js');
+    let hosts = await Context.getAll(fibers);
+
+    console.log('Found Contexts: ' + hosts.length);
+}) ();

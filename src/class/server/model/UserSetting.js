@@ -1,12 +1,12 @@
 module.exports = (function defineClass() {
 
-    const FObject = require('./Object.js');
-    class Handler extends FObject {
+    const Setting = require('./Setting.js');
+    class UserSetting extends Setting {
         constructor() {
             super();
         }
 
     }
 
-    return Handler;
+    return UserSetting;
 }) ();

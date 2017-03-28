@@ -1,7 +1,7 @@
 module.exports = (function defineClass() {
 
-    const FObject = require('./Object.js');
-    class Event extends FObject {
+    const ModelObject = require('./ModelObject.js');
+    class Event extends ModelObject {
         constructor() {
             super();
         }

@@ -6,6 +6,7 @@ module.exports = (function defineClass() {
             super();
         }
 
+        static get table() { return super.table; }
     }
 
     return Host;

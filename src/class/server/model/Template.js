@@ -1,7 +1,7 @@
 module.exports = (function defineClass() {
 
-    const FObject = require('./Object.js');
-    class Template extends FObject {
+    const ModelObject = require('./ModelObject.js');
+    class Template extends ModelObject {
         constructor() {
             super();
         }
