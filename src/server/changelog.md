@@ -1,5 +1,12 @@
 # server
 
+## 0.1.3
+
+* Refactor:
+    * Rename Endpoint to Route
+    * Rename Page to Document
+    * Update subclasses
+
 ## 0.1.1
 
 * Feature: Segregated server from GUI application handling
