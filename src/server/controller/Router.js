@@ -3,7 +3,7 @@
 (function() {
 
     const properties = new WeakMap();
-    const Base = require('../Base.js');
+    const Base = require('../../class/Base.js');
     class Router extends Base {
         constructor() {
             super();
@@ -39,7 +39,7 @@
     }
 
     module.exports = Router;
-    
+
     function getValidRoutes(path, routes) {
         return Object.keys(routes).filter((v, k, a) => {
             return path.startsWith(v);

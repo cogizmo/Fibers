@@ -3,7 +3,7 @@
 (function() {
 
     const properties = new WeakMap();
-    const Base = require('../Base.js');
+    const Base = require('../../class/Base.js');
     const Router = require('./Router.js');
     class HostRouter extends Router {
         constructor() {

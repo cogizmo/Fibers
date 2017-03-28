@@ -29,7 +29,7 @@ module.exports = (function() {
                         y(server);
                     })
                     .once('error', function (err) {
-                        if (err.code != 'EADDRINUSE') 
+                        if (err.code != 'EADDRINUSE')
                             return n('Port is in use');
                         return n(err);
                     })
@@ -102,7 +102,7 @@ module.exports = (function() {
                 if (distance <= maxDec)
                     legal = true;
             }
-            
+
             if (!legal)
                 throw new TypeError('Exceed Max Bytes');
 
@@ -121,11 +121,11 @@ module.exports = (function() {
             const __NET__ = require('net');
             let tester = __NET__.createServer()
                 .once('error', function (err) {
-                    if (err.code != 'EADDRINUSE') 
+                    if (err.code != 'EADDRINUSE')
                         return n('Port is in use');
                 })
                 .once('listening', function() {
-                    tester.once('close', function() { 
+                    tester.once('close', function() {
                             return y(true);
                         })
                         .close();
