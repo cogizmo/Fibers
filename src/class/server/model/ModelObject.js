@@ -2,8 +2,14 @@ module.exports = (function defineClass() {
 
     const Base = require('../../Base.js');
     class ModelObject extends Base {
-        constructor() {
+        constructor(config = {}) {
             super();
+
+            let {subclass} = config;
+            if (!!subclass) {
+                let SubClass = require(`./${subclass}.js`);
+                return new SubClass(config);
+            }
         }
 
     /**
@@ -13,12 +19,22 @@ module.exports = (function defineClass() {
      */
         static get table() { return this.name; }
 
+        static async findByID(database, id) {
+            let collection = database.collection(this.table);
+            let doc = await collection.document(id);
+
+            console.log(doc);
+            let object = new ModelObject(doc);
+            return object;
+        }
+
         static async findByKey(database, key) {
             let collection = database.collection(this.table);
             let [doc] = await collection.lookupByKeys([key]);
 
             let object = new this(doc);
             return object;
+            //.document
         }
 
         static async getAll(database) {
@@ -26,7 +42,7 @@ module.exports = (function defineClass() {
             let docs = await collection.all();
 
             let objects = docs.map((v) => {
-                return new this(v);
+                return new ModelObject(v);
             });
             return objects;
         }
