@@ -1,7 +1,7 @@
 module.exports = (function defineClass() {
 
-    const Endpoint = require('./Endpoint.js');
-    class Redirect extends Endpoint {
+    const Route = require('./Route.js');
+    class Redirect extends Route {
         constructor() {
             super();
         }

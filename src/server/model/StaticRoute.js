@@ -1,8 +1,8 @@
 module.exports = (function defineClass() {
     const instances = new WeakMap();
 
-    const Endpoint = require('./Endpoint.js');
-    class StaticRoute extends Endpoint {
+    const Route = require('./Route.js');
+    class StaticRoute extends Route {
         constructor(config = {}) {
             super();
 
