@@ -5,12 +5,10 @@ module.exports = (function defineClass() {
     class Host extends Context {
         constructor(config = {}) {
             super();
-
-            let {_id, _key, name, hostname} = config;
-
             let properties = Object.create(null);
             instances.set(this, properties);
 
+            let {_id, _key, name, hostname} = config;
             properties.id = _id;
             properties.key = _key;
             properties.subclass = this.className;
@@ -37,16 +35,16 @@ module.exports = (function defineClass() {
         }
 
         async getRoutes(database) {
-            const Endpoint = require('./Endpoint.js');
-            let collection = await database.edgeCollection('ContextEndpoints');
+            const Route = require('./Route.js');
+            let collection = await database.edgeCollection('ContextRoutes');
 
             console.log(`Finding routes for: ${this.key}`);
             let edges = await collection.outEdges(instances.get(this).id);
-            let endpoints = await Promise.all(edges.map(async(edge) => {
-                let endpoint = await Endpoint.findByID(database, edge._to);
-                return endpoint;
+            let routes = await Promise.all(edges.map(async(edge) => {
+                let route = await Route.findByID(database, edge._to);
+                return route;
             }));
-            return endpoints;
+            return routes;
         }
     }
 
