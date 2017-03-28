@@ -39,7 +39,7 @@
                 console.log(`Host not found: ${actualHost}`);
 
             }
-            console.log(`Request from: ${actualHost} at ${request.path}`);
+            //console.log(`Request from: ${actualHost} at ${request.url}`);
 
             let handlers = routes[actualHost];
             handlers.forEach(forward(request, response));
@@ -47,7 +47,7 @@
     }
 
     module.exports = HostRouter;
-    
+
     function getValidHosts(hostname, routes) {
         return Object.keys(routes).filter(isEqualTo(hostname));
     }
