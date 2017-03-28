@@ -24,6 +24,7 @@ process.on('unhandledRejection', (reason, promise) => {
     // be closed automatically when the JavaScript object is garbage collected.
     let intro, win;
 
+    let rApp = require('./class/server/');
 
     (async function openWindows() {
         try {

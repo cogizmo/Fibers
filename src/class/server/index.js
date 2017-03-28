@@ -1,15 +1,19 @@
+"use strict";
+
+const ArangoDB = require('arangojs');
+const __CONNECT__ = require('connect');
+
+let serveFiles = require('serve-static');
+const HostRouter = require('./controller/HostRouter.js');
+
+const LOG = console.log.bind(console);
+
 module.exports = (async function buildService() {
 
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
-    const __CONNECT__ = require('connect');
-    let serveFiles = require('serve-static');
-
-    const ArangoDB = require('arangojs');
-    const HostRouter = require('./controller/HostRouter.js');
     let fibersRouter = await loadRouter(new HostRouter());
-
     try {
         var rApp = startRemoteServer(fibersRouter.route.bind(fibersRouter)).catch(LOG);
     }
@@ -39,21 +43,21 @@ async function startRemoteServer(router) {
 }
 
 async function logInToDatabase(username, password) {
-    const database = 'fibers-development';
+    const dbname = 'fibers-development';
     let port = 8529,
         host = 'localhost';
-    let db = ArangoDB(`http://${host}:${port}`);
-    db.useDatabase(database);
-    db.useBasicAuth(username, password);
+    let database = ArangoDB(`http://${host}:${port}`);
+    database.useDatabase(dbname);
+    database.useBasicAuth(username, password);
 
-    return db;
+    return database;
 }
 
 async function loadRouter(base) {
     let fibers = await logInToDatabase('overseer', '#nf0rm@$!0n#$?0wr');
 
-    const Context = require('./class/server/model/Context.js');
-    const ModelObject = require('./class/server/model/ModelObject.js');
+    const Context = require('./model/Context.js');
+    const ModelObject = require('./model/ModelObject.js');
     let hosts = await Context.getAll(fibers);
 
     let routers = hosts.map((host) => {
