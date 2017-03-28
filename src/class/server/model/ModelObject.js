@@ -19,12 +19,22 @@ module.exports = (function defineClass() {
      */
         static get table() { return this.name; }
 
+        static async findByID(database, id) {
+            let collection = database.collection(this.table);
+            let doc = await collection.document(id);
+
+            console.log(doc);
+            let object = new ModelObject(doc);
+            return object;
+        }
+
         static async findByKey(database, key) {
             let collection = database.collection(this.table);
             let [doc] = await collection.lookupByKeys([key]);
 
             let object = new this(doc);
             return object;
+            //.document
         }
 
         static async getAll(database) {

@@ -7,7 +7,7 @@ module.exports = (function defineClass() {
             super();
 
             let {_key, route, path} = config;
-
+            console.log(config);
             let properties = Object.create(null);
             instances.set(this, properties);
 
