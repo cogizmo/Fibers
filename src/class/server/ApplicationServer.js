@@ -3,7 +3,7 @@
 module.exports = (function() {
     const __PERSONAL_USE__ = [49152, 65535];
 
-    const Base = require('../class/Base.js');
+    const Base = require('../Base.js');
     const __PROPS__ = new WeakMap();
     class ApplicationServer extends Base {
         constructor(router) {
@@ -29,7 +29,7 @@ module.exports = (function() {
                         y(server);
                     })
                     .once('error', function (err) {
-                        if (err.code != 'EADDRINUSE') 
+                        if (err.code != 'EADDRINUSE')
                             return n('Port is in use');
                         return n(err);
                     })
@@ -102,7 +102,7 @@ module.exports = (function() {
                 if (distance <= maxDec)
                     legal = true;
             }
-            
+
             if (!legal)
                 throw new TypeError('Exceed Max Bytes');
 
@@ -121,11 +121,11 @@ module.exports = (function() {
             const __NET__ = require('net');
             let tester = __NET__.createServer()
                 .once('error', function (err) {
-                    if (err.code != 'EADDRINUSE') 
+                    if (err.code != 'EADDRINUSE')
                         return n('Port is in use');
                 })
                 .once('listening', function() {
-                    tester.once('close', function() { 
+                    tester.once('close', function() {
                             return y(true);
                         })
                         .close();
