@@ -31,7 +31,7 @@ process.on('unhandledRejection', (reason, promise) => {
     let serveFiles = require('serve-static');
 
     const ArangoDB = require('arangojs');
-    const HostRouter = require('./class/server/HostRouter.js');
+    const HostRouter = require('./class/server/controller/HostRouter.js');
     let fibersRouter = await loadRouter(new HostRouter());
 
     try {
