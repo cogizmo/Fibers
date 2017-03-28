@@ -1,7 +1,7 @@
 module.exports = (function defineClass() {
 
-    const Endpoint = require('./Endpoint.js');
-    class Page extends Endpoint {
+    const Route = require('./Route.js');
+    class Page extends Route {
         constructor() {
             super();
         }
