@@ -4,12 +4,11 @@ module.exports = (function defineClass() {
     class Document extends Route {
         constructor(config = {}) {
             super();
-
-            let {_key, route, code} = config;
-            console.log(config);
             let properties = Object.create(null);
             instances.set(this, properties);
 
+            let {_id, _key, route, code} = config;
+            properties.id = _id;
             properties.key = _key;
             properties.subclass = this.className;
             properties.route = route;
@@ -25,7 +24,7 @@ module.exports = (function defineClass() {
         }
 
         get code() {
-            return instances.get(this).path;
+            return instances.get(this).code;
         }
     }
 
