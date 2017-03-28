@@ -263,4 +263,17 @@ async function logInToDatabase(username, password) {
     let hosts = await Context.getAll(fibers);
 
     console.log('Found Contexts: ' + hosts.length);
+    let endpoints = await Promise.all(hosts.map(async (host) => {
+        console.log(`${host.hostname}: Getting routes`);
+        if (host.key === "web") {
+            return await host.getRoutes();
+        }
+        return await '1';
+    }));
+    endpoints = endpoints.filter((v) => {
+        return typeof v === 'object';
+    })
+    await Promise.all(endpoints.map((endpoint) => {
+        return new Endpoint(endpoint);
+    }));
 }) ();
