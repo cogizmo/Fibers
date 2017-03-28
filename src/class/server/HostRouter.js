@@ -39,7 +39,7 @@
                 console.log(`Host not found: ${actualHost}`);
 
             }
-            console.log(`Request from: ${actualHost} at ${request.url}`);
+            //console.log(`Request from: ${actualHost} at ${request.url}`);
 
             let handlers = routes[actualHost];
             handlers.forEach(forward(request, response));
