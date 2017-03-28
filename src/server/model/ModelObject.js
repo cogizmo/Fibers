@@ -1,6 +1,6 @@
 module.exports = (function defineClass() {
 
-    const Base = require('../../Base.js');
+    const Base = require('../../class/Base.js');
     class ModelObject extends Base {
         constructor(config = {}) {
             super();

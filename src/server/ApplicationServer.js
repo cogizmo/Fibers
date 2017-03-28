@@ -3,7 +3,7 @@
 module.exports = (function() {
     const __PERSONAL_USE__ = [49152, 65535];
 
-    const Base = require('../Base.js');
+    const Base = require('../class/Base.js');
     const __PROPS__ = new WeakMap();
     class ApplicationServer extends Base {
         constructor(router) {
