@@ -1,4 +1,5 @@
 module.exports = (function defineClass() {
+    const instances = new WeakMap();
 
     const Route = require('./Route.js');
     class Document extends Route {
