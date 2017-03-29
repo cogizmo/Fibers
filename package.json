@@ -1,6 +1,6 @@
 {
     "name": "fiber",
-    "version": "0.1.5",
+    "version": "0.1.7",
     "debug": true,
     "description": "a",
     "main": "src/index.js",

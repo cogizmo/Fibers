@@ -1,24 +1,25 @@
 "use strict";
 
 const ArangoDB = require('arangojs');
-const __CONNECT__ = require('connect');
 
 let serveFiles = require('serve-static');
 const HostRouter = require('./controller/HostRouter.js');
+const StaticRoute = require('./model/StaticRoute.js');
 
 const LOG = console.log.bind(console);
 
+let fibersDatabase;
+let fibersRouter = new HostRouter();
 module.exports = (async function buildService() {
 
-    // This method will be called when Electron has finished
-    // initialization and is ready to create browser windows.
-    // Some APIs can only be used after this event occurs.
-    let fibersRouter = await loadRouter(new HostRouter());
+    fibersDatabase = await logInToDatabase('overseer', '#nf0rm@$!0n#$?0wr');
+    await loadRouter(fibersDatabase, fibersRouter);
+
     try {
         var rApp = startRemoteServer(fibersRouter.route.bind(fibersRouter)).catch(LOG);
     }
     catch (ex) {
-        console.log(ex);
+        LOG(ex);
         throw ex;
     }
 
@@ -35,7 +36,7 @@ async function startRemoteServer(router) {
         httpServer.listen(80, '127.0.100.100', 511, ()=>{})
     }
     catch(ex) {
-        console.log(ex);
+        LOG(ex);
         throw ex;
     }
 
@@ -53,34 +54,27 @@ async function logInToDatabase(username, password) {
     return database;
 }
 
-async function loadRouter(base) {
-    let fibers = await logInToDatabase('overseer', '#nf0rm@$!0n#$?0wr');
-
+async function loadRouter(database, base) {
     const Context = require('./model/Context.js');
     const ModelObject = require('./model/ModelObject.js');
-    let hosts = await Context.getAll(fibers);
 
-    let routers = hosts.map((host) => {
-        let router = __CONNECT__();
-        base.use(host.hostname, router);
-        return router;
-    });
-    hosts.forEach((host, idx) => {
-        if (host.hostname === 'components.fiber.dev')
-            routers[idx].use('/', enableCors);
-    })
+    let hosts = await Context.getAll(database);
+    let routers = hosts.map(createHostRouter);
+
+    let cors = base.getRouter('components.fiber.dev');
+    cors.use('/', enableCors);
 
     let endpoints = await Promise.all(hosts.map(async (host) => {
-        console.log(`${host.hostname}: Getting routes`);
+        LOG(`${host.hostname}: Getting routes`);
         let endpoints = [];
-        endpoints = await host.getRoutes(fibers);
+        endpoints = await host.getRoutes(database);
 
         endpoints = endpoints.filter((v) => {
             return typeof v === 'object';
         })
 
         endpoints.forEach(v => {
-            console.log(`Static Route: ${v.route} => ${v.path}`);
+            LOG(`Static Route: ${v.route} => ${v.path}`);
         })
         return await endpoints;
     }));
@@ -88,11 +82,20 @@ async function loadRouter(base) {
     routers.map((router, idx) => {
         let routes = endpoints[idx];
         routes.forEach((route) => {
-            router.use(route.route, serveFiles(route.path));
+            if (router instanceof StaticRoute)
+                router.use(route.route, serveFiles(route.path));
         })
     });
 
     return base;
+}
+
+function createHostRouter(host) {
+    const __CONNECT__ = require('connect');
+
+    let router = __CONNECT__();
+    fibersRouter.use(host.hostname, router);
+    return router;
 }
 
 function enableCors(request, response, next) {
