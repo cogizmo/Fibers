@@ -2,7 +2,7 @@
 
 (function() {
 
-    const properties = new WeakMap();
+    const instances = new WeakMap();
     const Base = require('../../class/Base.js');
     const Router = require('./Router.js');
     class HostRouter extends Router {
@@ -10,17 +10,17 @@
             super();
 
             let props = new Base();
-            properties.set(this, props);
+            instances.set(this, props);
 
             props.routes = new Base();
         }
 
         get routes() {
-            return Object.keys(properties.get(this).routes);
+            return Object.keys(instances.get(this).routes);
         }
 
         use(route = '/', router) {
-            let {routes} = properties.get(this);
+            let {routes} = instances.get(this);
             if (routes[route])
                 routes[route].push(router);
             else routes[route] = [router];
@@ -32,7 +32,7 @@
             // host = hostname:port
                 [hostname] = host.split(':');
 
-            let {routes} = properties.get(this);
+            let {routes} = instances.get(this);
             let [actualHost] = getValidHosts(hostname, routes);
 
             if (!actualHost) {
@@ -43,6 +43,10 @@
 
             let handlers = routes[actualHost];
             handlers.forEach(forward(request, response));
+        }
+
+        getRouter(hostname) {
+            return instances.get(this).routes[hostname];
         }
     }
 
