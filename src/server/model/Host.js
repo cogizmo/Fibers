@@ -36,7 +36,7 @@ module.exports = (function defineClass() {
 
         async getRoutes(database) {
             const Route = require('./Route.js');
-            let collection = await database.edgeCollection('ContextRoutes');
+            let collection = await database.edgeCollection('ContextEndpoints');
 
             console.log(`Finding routes for: ${this.key}`);
             let edges = await collection.outEdges(instances.get(this).id);
