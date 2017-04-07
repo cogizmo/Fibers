@@ -15,6 +15,7 @@ module.exports = (async function buildService() {
     fibersDatabase = await logInToDatabase('overseer', '#nf0rm@$!0n#$?0wr');
     await loadRouter(fibersDatabase, fibersRouter);
 
+
     try {
         var rApp = startRemoteServer(fibersRouter.route.bind(fibersRouter)).catch(LOG);
     }
@@ -25,23 +26,6 @@ module.exports = (async function buildService() {
 
     return rApp;
 }) ();
-
-async function startRemoteServer(router) {
-    const Server = require('./ApplicationServer.js');
-
-    let httpServer;
-    let port = await Server.findPort();
-    try {
-        httpServer = await new Server(router);
-        httpServer.listen(80, '127.0.100.100', 511, ()=>{})
-    }
-    catch(ex) {
-        LOG(ex);
-        throw ex;
-    }
-
-    return httpServer;
-}
 
 async function logInToDatabase(username, password) {
     const dbname = 'fibers-development';
@@ -61,31 +45,10 @@ async function loadRouter(database, base) {
     let hosts = await Context.getAll(database);
     let routers = hosts.map(createHostRouter);
 
-    let cors = base.getRouter('components.fiber.dev');
+    let [cors] = base.getRouter('components.fiber.dev');
     cors.use('/', enableCors);
 
-    let endpoints = await Promise.all(hosts.map(async (host) => {
-        LOG(`${host.hostname}: Getting routes`);
-        let endpoints = [];
-        endpoints = await host.getRoutes(database);
-
-        endpoints = endpoints.filter((v) => {
-            return typeof v === 'object';
-        })
-
-        endpoints.forEach(v => {
-            LOG(`Static Route: ${v.route} => ${v.path}`);
-        })
-        return await endpoints;
-    }));
-
-    routers.map((router, idx) => {
-        let routes = endpoints[idx];
-        routes.forEach((route) => {
-            if (router instanceof StaticRoute)
-                router.use(route.route, serveFiles(route.path));
-        })
-    });
+    await Promise.all(hosts.map(createStaticRouters));
 
     return base;
 }
@@ -127,3 +90,34 @@ function enableCors(request, response, next) {
     }
 }
 
+async function createStaticRouters(host) {
+    let endpoints = await host.getRoutes(fibersDatabase);
+    endpoints = endpoints.filter((v) => {
+        return typeof v === 'object';
+    });
+
+    let [router] = fibersRouter.getRouter(host.hostname);
+    endpoints.forEach((route) => {
+        console.log(host.hostname + ' => ' + route.constructor.name)
+        if (route instanceof StaticRoute)
+            router.use(route.route, serveFiles(route.path));
+        else route.save();
+    })
+}
+
+async function startRemoteServer(router) {
+    const Server = require('./ApplicationServer.js');
+
+    let httpServer;
+    let port = await Server.findPort();
+    try {
+        httpServer = await new Server(router);
+        httpServer.listen(80, '127.0.100.100', 511, ()=>{})
+    }
+    catch(ex) {
+        LOG(ex);
+        throw ex;
+    }
+
+    return httpServer;
+}
