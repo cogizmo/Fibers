@@ -29,5 +29,8 @@ module.exports = (function defineClass() {
         }
     }
 
+    Object.defineProperty(Document.prototype, 'route', { enumerable: true });
+    Object.defineProperty(Document.prototype, 'code', { enumerable: true });
+
     return Document;
 }) ();

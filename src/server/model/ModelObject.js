@@ -23,7 +23,6 @@ module.exports = (function defineClass() {
             let collection = database.collection(this.table);
             let doc = await collection.document(id);
 
-            console.log(doc);
             let object = new ModelObject(doc);
             return object;
         }
@@ -52,7 +51,18 @@ module.exports = (function defineClass() {
                 ? this.constructor.name
                 : '';
         }
+
+        save() {
+            let out = {};
+
+            for(let prop in this) {
+                out[prop] = this[prop];
+            }
+            console.log(JSON.stringify(out));
+        }
     }
+
+    Object.defineProperty(ModelObject.prototype, 'className', { enumerable: true });
 
     return ModelObject;
 }) ();
